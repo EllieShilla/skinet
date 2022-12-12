@@ -1,0 +1,10 @@
+<header>
+  <span *ngIf="this.totalCount && this.totalCount>0">
+    Showing <strong>{{ this.minNum }} -
+      {{ this.maxNum }}</strong> of
+    <strong>{{ this.totalCount }}</strong> Results
+  </span>
+  <span *ngIf="this.totalCount===0">
+    There are <strong>0</strong> result for this filter
+  </span>
+</header>

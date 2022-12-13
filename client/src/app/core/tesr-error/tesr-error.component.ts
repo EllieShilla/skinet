@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class TesrErrorComponent implements OnInit {
   baseUrl = environment.apiUrl;
+  validationErrors: any;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,7 @@ export class TesrErrorComponent implements OnInit {
   }
 
   get500Error() {
-    this.http.get(this.baseUrl + 'buggy/servererror').subscribe(
+    this.http.get(this.baseUrl + 'bugg/servererror').subscribe(
       (response) => {
         console.log(response);
       },
@@ -37,7 +38,7 @@ export class TesrErrorComponent implements OnInit {
   }
 
   get400Error() {
-    this.http.get(this.baseUrl + 'buggy/badrequest').subscribe(
+    this.http.get(this.baseUrl + 'bugg/badrequest').subscribe(
       (response) => {
         console.log(response);
       },
@@ -54,6 +55,7 @@ export class TesrErrorComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.validationErrors = error.errors;
       }
     );
   }

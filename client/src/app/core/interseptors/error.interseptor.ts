@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr/public_api';
+import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable()
@@ -19,15 +19,22 @@ export class ErrorInterseptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error) => {
         if (error) {
-          if (error.status === 400)
-            this.toastr.error(error.error.message, error.error.statusCode);
+          if (error.status === 400) {
+            if (error.error.errors) {
+              throw error.error;
+            } else
+              this.toastr.error(error.error.message, error.error.statusCode);
+          }
 
-            if (error.status === 401)
+          if (error.status === 401)
             this.toastr.error(error.error.message, error.error.statusCode);
 
           if (error.status === 404) this.router.navigateByUrl('/not-found');
 
-          if (error.status === 500) this.router.navigateByUrl('/server-error');
+          if (error.status === 500) {
+            const navigationExtras = { state: { error: error.error } };
+            this.router.navigateByUrl('/server-error', navigationExtras);
+          }
         }
         return throwError(error);
       })

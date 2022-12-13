@@ -1,0 +1,22 @@
+<div class="row" *ngIf="product">
+  <div  style="display: flex; justify-content: space-between; margin-left: 20px;" class="col-6">
+    <img src="{{ product.pictureUrl }}" alt="{{ product.name }}" class="img-fluid w-100" style="margin-right: 40px;background-color: aqua;">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;" class="col-12">
+      <div >
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price | currency }}</p>
+        <div class="d-flex justify-content-star align-items-center">
+          <i class="fa fa-minus-circle text-warning" style="cursor: pointer; font-size: 2em;margin-right: 5px;"></i>
+          <span class="font-weight-bold" style="font-size: 1.5em;">2</span>
+          <i class="fa fa-plus-circle text-warning" style="cursor: pointer; font-size: 2em; margin-left: 5px;"></i>
+          <button class="btn btn-outline-secondary btn-lg" style="margin-left: 10px; width: 250px;">Add to Card</button>
+        </div>
+      </div>
+      <div >
+        <h4>Description</h4>
+        <p>{{ product.description }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -4,6 +4,7 @@ import { NumberValueAccessor } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { IBrand } from '../shared/models/brand';
 import { IPagination } from '../shared/models/pagination';
+import { IProduct } from '../shared/models/product';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
 
@@ -29,8 +30,7 @@ export class ShopService {
     params = params.append('pageIndex', shopParams.pageNumber.toString());
     params = params.append('pageIndex', shopParams.pageSize.toString());
 
-    if(shopParams.search)
-    params = params.append('search', shopParams.search);
+    if (shopParams.search) params = params.append('search', shopParams.search);
 
     return this.http
       .get<IPagination>(this.baseUrl + 'products', {
@@ -50,5 +50,9 @@ export class ShopService {
 
   getTypes() {
     return this.http.get<IType[]>(this.baseUrl + 'products/types');
+  }
+
+  getProduct(id: number) {
+    return this.http.get<IProduct>(this.baseUrl + 'products/' + id.toString());
   }
 }

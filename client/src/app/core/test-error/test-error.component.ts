@@ -4,8 +4,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tesr-error',
-  templateUrl: './tesr-error.component.html',
-  styleUrls: ['./tesr-error.component.scss'],
+  templateUrl: './test-error.component.html',
+  styleUrls: ['./test-error.component.scss'],
 })
 export class TesrErrorComponent implements OnInit {
   baseUrl = environment.apiUrl;

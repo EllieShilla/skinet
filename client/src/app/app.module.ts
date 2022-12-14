@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { ErrorInterseptor } from './core/interseptors/error.interseptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterseptor } from './core/interseptors/loading.interseptors';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,9 +20,11 @@ import { ErrorInterseptor } from './core/interseptors/error.interseptor';
     HttpClientModule,
     CoreModule,
     HomeModule,
+    NgxSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterseptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterseptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

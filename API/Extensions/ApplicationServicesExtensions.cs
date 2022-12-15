@@ -14,6 +14,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();   //AddScoped(жизенный цикл запроса) сервис создаются единожды для каждого запроса
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));   //AddScoped(жизенный цикл запроса) сервис создаются единожды для каждого запроса
 
             services.Configure<ApiBehaviorOptions>(options =>

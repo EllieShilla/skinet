@@ -10,8 +10,8 @@
     <a class="p-2" style="text-decoration: none;" routerLink="/test-error" routerLinkActive="active">Error</a>
   </nav>
   <div class="d-flex align-items-center justify-content-between" style="width: 200px;">
-    <a class="position-relative" style="margin-right: 20px;">
-      <div class="cart-no">5</div>
+    <a routerLink="/basket" class="position-relative" style="margin-right: 20px;">
+      <div *ngIf="(basket$ | async) as basket" class="cart-no">{{basket.items.length}}</div>
       <i class="fa fa-shopping-cart fa-2x mr-5 text-dark"></i>
     </a>
     <a class="btn btn-outline-secondary mr-2">Login</a>

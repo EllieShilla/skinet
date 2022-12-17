@@ -8,10 +8,10 @@
           <h3>{{ product.name }}</h3>
           <p style="font-size: 20pm;">{{ product.price | currency }}</p>
           <div class="d-flex justify-content-star align-items-center">
-            <i class="fa fa-minus-circle text-warning" style="cursor: pointer; font-size: 2em;margin-right: 5px;"></i>
-            <span class="font-weight-bold" style="font-size: 1.5em;">2</span>
-            <i class="fa fa-plus-circle text-warning" style="cursor: pointer; font-size: 2em; margin-left: 5px;"></i>
-            <button class="btn btn-outline-secondary btn-lg" style="margin-left: 10px; width: 250px;">Add to
+            <i (click)="decrementQuantity()" class="fa fa-minus-circle text-warning" style="cursor: pointer; font-size: 2em;margin-right: 5px;"></i>
+            <span class="font-weight-bold" style="font-size: 1.5em;">{{quantity}}</span>
+            <i (click)="incrementQuantity()" class="fa fa-plus-circle text-warning" style="cursor: pointer; font-size: 2em; margin-left: 5px;"></i>
+            <button (click)="addItemToBasket()" class="btn btn-outline-primary btn-lg" style="margin-left: 10px; width: 250px;">Add to
               Card</button>
           </div>
         </div>

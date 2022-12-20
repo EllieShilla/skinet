@@ -1,25 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Helpers;
-using Core.Interfaces;
 using Infrastructure.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using AutoMapper;
 using API.Middleware;
-using API.Errors;
 using API.Extensions;
 using StackExchange.Redis;
+using Infrastructure.Identity;
 
 namespace API
 {
@@ -38,6 +23,11 @@ namespace API
             services.AddControllers();
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<AppIdentityDbContext>(x =>
+            {
+                x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
+            });
+
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
@@ -45,6 +35,7 @@ namespace API
             });
 
             services.AddApplicationServices();
+            services.AddIdentityService(_configuration);
             services.AddSwagerDocumentation();
 
             services.AddCors(opt =>
@@ -71,6 +62,8 @@ namespace API
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

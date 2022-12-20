@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Errors;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Extensions
@@ -13,6 +14,7 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProductRepository, ProductRepository>();   //AddScoped(жизенный цикл запроса) сервис создаются единожды для каждого запроса
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));   //AddScoped(жизенный цикл запроса) сервис создаются единожды для каждого запроса

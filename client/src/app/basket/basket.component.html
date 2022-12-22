@@ -13,19 +13,19 @@
                 <thead>
                   <tr>
                     <th class="border-0 bg-light" scope="col">
-                      <div class="p-2 px-3 text-uppercase">Product</div>
+                      <div class="p-2 px-3 text-uppercase text-center">Product</div>
                     </th>
                     <th scope="col" class="border-0 bg-light">
-                      <div class="py-2 text-uppercase">Price</div>
+                      <div class="py-2 text-uppercase text-center">Price</div>
                     </th>
                     <th scope="col" class="border-0 bg-light">
-                      <div class="py-2 text-uppercase">Quantity</div>
+                      <div class="py-2 text-uppercase text-center">Quantity</div>
                     </th>
                     <th scope="col" class="border-0 bg-light">
-                      <div class="py-2 text-uppercase">Total</div>
+                      <div class="py-2 text-uppercase text-center">Total</div>
                     </th>
                     <th scope="col" class="border-0 bg-light">
-                      <div class="py-2 text-uppercase">Remove</div>
+                      <div class="py-2 text-uppercase text-center">Remove</div>
                     </th>
                   </tr>
                 </thead>
@@ -43,9 +43,9 @@
                         </div>
                       </div>
                     </th>
-                    <td class="align-middle"><strong>{{ item.price | currency }}</strong></td>
+                    <td class="align-middle text-center"><strong>{{ item.price | currency }}</strong></td>
                     <td class="align-middle">
-                      <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center" style="justify-content: center;">
                         <i (click)="decrementItemQuantity(item)" class="fa fa-minus-circle text-warning"
                           style="cursor: pointer; font-size: 2em;margin-right: 5px;"></i>
                         <span class="font-weight-bold" style="font-size: 1.5em;">{{ item.quantity }}</span>
@@ -53,9 +53,11 @@
                           style="cursor: pointer; font-size: 2em; margin-left: 5px;"></i>
                       </div>
                     </td>
-                    <td class="align-middle"><strong>{{ item.price * item.quantity | currency }}</strong></td>
                     <td class="align-middle text-center">
-                      <a class="text-danger"><i (click)="removeBasketItem(item)" class="fa fa-trash" style="font-size: 2em;text-align: center;cursor: pointer;"></i></a>
+                      <strong>{{ item.price * item.quantity | currency }}</strong></td>
+                    <td class="align-middle text-center">
+                      <a class="text-danger"><i (click)="removeBasketItem(item)" class="fa fa-trash"
+                          style="font-size: 2em;cursor: pointer;"></i></a>
                     </td>
                   </tr>
                 </tbody>

@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     private accountService: AccountService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadBasket();
     this.loadCurrentUser();
   }

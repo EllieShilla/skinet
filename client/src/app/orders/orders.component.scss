@@ -1,0 +1,11 @@
+tr{
+  width: 100%;
+  border:0;
+  border-bottom: 1px solid grey;
+  height: 50px;
+}
+
+tr:hover{
+  background-color:lightgray;
+  cursor: pointer;
+}

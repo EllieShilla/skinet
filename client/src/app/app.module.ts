@@ -11,9 +11,11 @@ import { ErrorInterseptor } from './core/interseptors/error.interseptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterseptor } from './core/interseptors/loading.interseptors';
 import { JwtInterceptor } from './core/interseptors/jwt.interceptor';
+import { OrdersComponent } from './orders/orders.component';
+import { OrdersModule } from './orders/orders.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, OrdersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,6 +24,7 @@ import { JwtInterceptor } from './core/interseptors/jwt.interceptor';
     CoreModule,
     HomeModule,
     NgxSpinnerModule,
+    OrdersModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterseptor, multi: true },

@@ -1,0 +1,41 @@
+<div class="container mt-2">
+
+<ng-container>
+  <div class="table-responsice">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="border-0 bg-light" scope="col">
+            <div class="p2 px-3 text-uppercase text-center">Order</div>
+          </th>
+          <th class="border-0 bg-light" scope="col">
+            <div class="p2 px-3 text-uppercase text-center">Date</div>
+          </th>
+          <th class="border-0 bg-light" scope="col">
+            <div class="p2 px-3 text-uppercase text-center">Total</div>
+          </th>
+          <th class="border-0 bg-light" scope="col">
+            <div class="p2 px-3 text-uppercase text-center">Status</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders; let i=index" (click)="loadOrder(order.id)">
+            <td class="align-middle text-center">
+              <strong># {{ order.id }}</strong>
+            </td>
+            <td class="align-middle text-center">
+              {{ order.orderDate | date: 'MMM d, y H:mm:ss' : 'UTC' }}
+            </td>
+            <td class="align-middle text-center">
+              {{ order.total | currency }}
+            </td>
+            <td class="align-middle text-center">
+              {{ order.status }}
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+</div>

@@ -26,7 +26,7 @@ import { SharedModule } from '../shared/shared.module';
       preventDuplicates: true,
     }),
     BreadcrumbModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [NavBarComponent, SectionHeaderComponent],
 })

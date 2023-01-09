@@ -8,6 +8,7 @@ import {
   IBasketItem,
   IBasketTotals,
 } from '../shared/models/basket';
+import { CardData } from '../shared/models/cardData';
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IProduct } from '../shared/models/product';
 
@@ -24,15 +25,37 @@ export class BasketService {
 
   constructor(private http: HttpClient) {}
 
+  createPaymentIntent(cardData: CardData) {
+    return this.http
+      .post(
+        this.baseUrl +
+          'payments/' +
+          this.getCurrentBasketValue().id +
+          '/carddata',
+          cardData
+      )
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);
+          return basket;
+        })
+      );
+  }
+
   setShippingPrice(deliveryMethod: IDeliveryMethod) {
     this.shipping = deliveryMethod.price;
+    const basket = this.getCurrentBasketValue();
+    basket.deliveryMethodId = deliveryMethod.id;
+    basket.shippingPrice = deliveryMethod.price;
     this.calculateTotals();
+    this.setBasket(basket);
   }
 
   getBasket(id: string) {
     return this.http.get(this.baseUrl + 'basket?id=' + id).pipe(
       map((basket: IBasket) => {
         this.basketSource.next(basket);
+        this.shipping = basket.shippingPrice;
         this.calculateTotals();
       })
     );
@@ -43,7 +66,6 @@ export class BasketService {
       (response: IBasket) => {
         this.basketSource.next(response);
         this.calculateTotals();
-        console.log(response);
       },
       (error) => {
         console.log(error);

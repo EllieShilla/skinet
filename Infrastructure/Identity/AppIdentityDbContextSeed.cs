@@ -34,3 +34,5 @@ namespace Infrastructure.Identity
         }
     }
 }
+
+// eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvYkB0ZXN0LmNvbSIsImdpdmVuX25hbWUiOiJCb2IiLCJuYmYiOjE2NzI5MjE0OTgsImV4cCI6MTY3MzUyNjI5OCwiaWF0IjoxNjcyOTIxNDk4LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTc4In0.FMt_UlvSF1mTR9CcY8NNq05SMA_70Ht7SEjm1C1C5gyMMMFu3odpGpo8ODCx5mYH4jNSG-c9ozSl-8AT7vrKJQ

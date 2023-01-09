@@ -1,10 +1,26 @@
-<p>checkout-payment works!</p>
+<div class="mt-4 mb-4" [formGroup]="checkoutForm">
+  <div class="row">
+    <div class="form-group col-6" formGroupName="paymentForm">
+      <input id="cc-number" type="tel" autocomplete="cc-number" ccNumber
+        placeholder="••••&nbsp;••••&nbsp;••••&nbsp;••••" class="form-control py-3" formControlName="card"  maxlength="19">
+    </div>
+    <div class="form-group col-3" formGroupName="paymentForm">
+      <input id="cc-exp-date" type="tel" autocomplete="cc-exp" ccExp placeholder="MM/YY"
+        class="form-control py-3" formControlName="expiration">
+    </div>
+    <div class="form-group col-3" formGroupName="paymentForm">
+      <input id="cc-cvc" type="tel" autocomplete="off" ccCVC placeholder="CVV" maxlength="3"
+        class="form-control py-3" formControlName="cvv">
+    </div>
+  </div>
+</div>
+
 
 <div class="float-none d-flex justify-content-between flex-column flex-lg-row mb-5">
   <button class="btn btn-outline-primary" cdkStepperPrevious>
     <i class="fa fa-angle-left">Back to Review</i>
   </button>
-  <button class="btn btn-outline-primary" (click)="submitOrder()">
+  <button [disabled]="checkoutForm.get('paymentForm').invalid" class="btn btn-outline-primary" (click)="createPaymnetIntent()">
     Submit Order<i class="fa fa-angle-right"></i>
   </button>
 </div>

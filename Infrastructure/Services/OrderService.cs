@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Services
 {
@@ -13,10 +14,16 @@ namespace Infrastructure.Services
     {
         private readonly IBasketRepository _basketRepo;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
+        private readonly IPaymentService _paymentService;
+        private readonly ILogger<OrderService> _logger;
+
+        public OrderService(IBasketRepository basketRepo, IUnitOfWork unitOfWork,
+        IPaymentService paymentService, ILogger<OrderService> logger)
         {
+            _paymentService = paymentService;
             _unitOfWork = unitOfWork;
             _basketRepo = basketRepo;
+            _logger = logger;
         }
 
         public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
@@ -40,15 +47,28 @@ namespace Infrastructure.Services
             //calc subtotal
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
+            //check to see if order exists
+            var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if (existingOrder != null)
+            {
+                _unitOfWork.Repository<Order>().Delete(existingOrder);
+                // await _paymentService.CreateOrUpdatePaymentIntent(basket.PaymentIntentId);
+            }
+
             //create order
-            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod,
+            subtotal, basket.PaymentIntentId);
+            _unitOfWork.Repository<Order>().Add(order);
 
             //TODO: save db
-            _unitOfWork.Repository<Order>().Add(order);
             var result = await _unitOfWork.Complete();
 
             if (result <= 0)
                 return null;
+
+            await UpdateStatusOrderAsync(basket.PaymentIntentId, basket.Status, order.Id.ToString());
 
             //delete basket
             await _basketRepo.DeleteBascketAsync(basketId);
@@ -73,5 +93,53 @@ namespace Infrastructure.Services
             var spec = new OrdersWithItemsAndOrderingSpecification(buyerEmail);
             return await _unitOfWork.Repository<Order>().ListAsync(spec);
         }
+
+
+        public async Task UpdateStatusOrderAsync(string paymentIntentId, string status, string orderId)
+        {
+            if (status.Equals("success"))
+            {
+                _logger.LogInformation("Payment Succeeded: ", paymentIntentId);
+                await UpdateOrderPaymentSucceeded(paymentIntentId);
+                _logger.LogInformation("Order update to payment received: ", orderId);
+            }
+            else
+            {
+                _logger.LogInformation("Payment Failed: ", paymentIntentId);
+                await UpdateOrderPaymentFailed(paymentIntentId);
+                _logger.LogInformation("Payment Failed: ", orderId);
+            }
+        }
+
+
+        public async Task<Order> UpdateOrderPaymentFailed(string paymentIntentId)
+        {
+            var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if (order == null) return null;
+
+            order.Status = OrderStatus.PaymentFailed;
+            await _unitOfWork.Complete();
+
+            return null;
+        }
+
+        public async Task<Order> UpdateOrderPaymentSucceeded(string paymentIntentId)
+        {
+            var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+            if (order == null) return null;
+
+            order.Status = OrderStatus.PaymentReceived;
+            _unitOfWork.Repository<Order>().Update(order);
+
+            await _unitOfWork.Complete();
+
+            return null;
+        }
     }
 }
+
+

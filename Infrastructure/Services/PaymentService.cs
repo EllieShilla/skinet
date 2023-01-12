@@ -10,7 +10,6 @@ using Infrastructure.Data;
 using Infrastructure.LiqPay;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Paymentwall;
 using Product = Core.Entities.Product;
 
 namespace Infrastructure.Services

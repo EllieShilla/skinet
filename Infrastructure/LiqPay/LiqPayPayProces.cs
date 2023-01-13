@@ -10,31 +10,33 @@ namespace Infrastructure.LiqPay
 {
     public class LiqPayPayProces
     {
+        private readonly HttpClient httpClient;
+
+        public LiqPayPayProces()
+        {
+            //Create the request sender object
+            httpClient = new HttpClient();
+
+            //Set the headers
+            // httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("MessageService/3.1");
+
+        }
         public async Task<ResponceLiqPay> PayAsync(LiqPayData data)
         {
             var url = "https://www.liqpay.ua/api/request";
 
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpRequest.Method = "POST";
+            string message = GetDataAndSignature(data);
 
-            httpRequest.ContentType = "application/x-www-form-urlencoded";
+            var response = await httpClient.PostAsync(url, new StringContent(message, Encoding.UTF8, "application/x-www-form-urlencoded"));
 
-            string dataList = GetDataAndSignature(data);
+            //Check for error status
+            response.EnsureSuccessStatusCode();
 
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
-            {
-                streamWriter.Write(dataList);
-            }
+            var tmp=await response.Content.ReadAsStringAsync();
+            var liqpayRespose=Newtonsoft.Json.JsonConvert.DeserializeObject<ResponceLiqPay>(tmp);
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            string result;
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                result = streamReader.ReadToEnd();
-            }
-
-            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponceLiqPay>(result);
-            return await Task.FromResult(response);
+            //Get the response content
+            return liqpayRespose;
         }
 
         private string GetDataAndSignature(LiqPayData liqPayData)

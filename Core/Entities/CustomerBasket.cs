@@ -20,7 +20,7 @@ namespace Core.Entities
         public List<BascketItem> Items { get; set; } = new List<BascketItem>();
         public int? DeliveryMethodId { get; set; }
         public string ClientSecret { get; set; }
-        public string? PaymentIntentId { get; set; }
+        public string PaymentIntentId { get; set; }
         public decimal ShippingPrice { get; set; }
         public string Status { get; set; }
     }

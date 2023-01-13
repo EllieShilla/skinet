@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
@@ -15,10 +16,12 @@ namespace Infrastructure.Data
         {
             try
             {
+                var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
                 if (!context.ProductBrands.Any())
                 {
                     var brandData =
-                    File.ReadAllText("../Infrastructure/Data/SeedData/brands.json");
+                    File.ReadAllText(path + @"/Data/SeedData/brands.json");
 
                     var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandData);
 
@@ -48,7 +51,7 @@ namespace Infrastructure.Data
                 if (!context.Products.Any())
                 {
                     var productData =
-                    File.ReadAllText("../Infrastructure/Data/SeedData/products.json");
+                    File.ReadAllText(path + @"/Data/SeedData/products.json");
 
                     var products = JsonSerializer.Deserialize<List<Product>>(productData);
 
@@ -63,7 +66,7 @@ namespace Infrastructure.Data
                 if (!context.DeliveryMethods.Any())
                 {
                     var deliveryMethod =
-                    File.ReadAllText("../Infrastructure/Data/SeedData/delivery.json");
+                    File.ReadAllText(path + @"/Data/SeedData/delivery.json");
 
                     var delivery = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethod);
 

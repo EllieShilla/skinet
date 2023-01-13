@@ -18,7 +18,6 @@ namespace API.Controllers
     public class PaymentsController : BaseAPIController
     {
         private readonly IPaymentService _paymentService;
-        private const string WhSecret = "";
 
         public PaymentsController(IPaymentService paymentService)
         {
